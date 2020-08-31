@@ -1,7 +1,7 @@
 /*
  * Manutenção de fonte
  * Autor: Gabriel Garcia Pereira
- * Data: Pousada - DDD
+ * Data: 26 / 08 / 2020
  * Manutenção: Implementação Inicial
  */
 
@@ -22,6 +22,10 @@ public class Quarto {
 		this.categoria = categoria;
 		this.maxPessoas = maxPessoas;
 		this.valorDiaria = valorDiaria;
+	}
+	
+	public Quarto() {
+		
 	}
 
 	// GETTERS SETTERS

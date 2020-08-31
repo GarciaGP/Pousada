@@ -1,7 +1,7 @@
 /*
  * Manutenção de fonte
  * Autor: Gabriel Garcia Pereira
- * Data: Pousada - DDD
+ * Data: 26 / 08 / 2020
  * Manutenção: Implementação Inicial
  */
 
@@ -56,5 +56,6 @@ public class Reserva {
 	public void setQuantidadePessoas(int quantidadePessoas) {
 		this.quantidadePessoas = quantidadePessoas;
 	}
+	
 
 }
