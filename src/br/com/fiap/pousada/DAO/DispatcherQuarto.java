@@ -8,6 +8,7 @@
 package br.com.fiap.pousada.DAO;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -34,7 +35,7 @@ public class DispatcherQuarto {
 			for(Quarto quarto : quartos) {
 						
 				String sql = String.format("INSERT INTO T_QUARTO(NR_QUARTO, CATEGORIA, MAXPESSOAS, VLRDIARIA)"
-						+ "VALUES(%d, %d, %d, %.0f)", quarto.getNumero(), quarto.getCategoria().ordinal(),
+						+ "VALUES(?, ?, ?, ?)", quarto.getNumero(), quarto.getCategoria().ordinal(),
 						quarto.getMaxPessoas(), quarto.getValorDiaria());
 				
 				Statement stmt = this.conn.createStatement();
@@ -45,6 +46,12 @@ public class DispatcherQuarto {
 			this.desconecta(this.conn);
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				this.desconecta(this.conn);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		
 	}
@@ -92,25 +99,27 @@ public class DispatcherQuarto {
 	public Quarto obterQuarto(int numeroQuarto) {
 
 		try {
-
-			Statement stmt = this.conn.createStatement();
-
+			
+			PreparedStatement pstmt = null;
 			String sql = String.format("SELECT * from T_QUARTO WHERE NR_QUARTO LIKE '%d'", numeroQuarto);
+			
+			pstmt = this.conn.prepareStatement(sql);
+							
+			ResultSet rs = pstmt.executeQuery();
+			
+			Quarto quarto = new Quarto();
 
-			ResultSet rs = stmt.executeQuery(sql);
-			
-			Quarto obj = new Quarto();
-			
 			while(rs.next()){
-				obj.setNumero(rs.getInt("NR_QUARTO"));
-				obj.setCategoria(Categoria.values()[rs.getInt("CATEGORIA")]);
-				obj.setMaxPessoas(rs.getInt("MAXPESSOAS"));
-				obj.setValorDiaria(rs.getDouble("VLRDIARIA"));
+				
+				quarto.setNumero(rs.getInt("NR_QUARTO"));
+				quarto.setCategoria(Categoria.values()[rs.getInt("CATEGORIA")]);
+				quarto.setMaxPessoas(rs.getInt("MAXPESSOAS"));
+				quarto.setValorDiaria(rs.getDouble("VLRDIARIA"));
+				
 			}
-
 		
 			this.fecharConexao(this.conn);
-			return obj;
+			return quarto;
 		} catch (Exception e) {
 			System.err.println("Quarto não encontrado.");
 			System.err.println(e.getMessage());

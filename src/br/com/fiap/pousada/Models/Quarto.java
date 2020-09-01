@@ -41,8 +41,8 @@ public class Quarto {
 		return categoria;
 	}
 
-	public void setCategoria(Categoria categoria) {
-		this.categoria = categoria;
+	public void setCategoria(Categoria apartamento) {
+		this.categoria = apartamento;
 	}
 
 	public int getMaxPessoas() {
@@ -60,5 +60,12 @@ public class Quarto {
 	public void setValorDiaria(double valorDiaria) {
 		this.valorDiaria = valorDiaria;
 	}
+
+	@Override
+	public String toString() {
+		return "numero: " + numero + " categoria: "  + categoria + " maxPessoas: "  + maxPessoas + " valorDiaria: " 
+				+ valorDiaria ;
+	}
+	
 
 }

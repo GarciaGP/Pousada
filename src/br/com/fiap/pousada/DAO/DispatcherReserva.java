@@ -8,11 +8,11 @@
 package br.com.fiap.pousada.DAO;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -32,28 +32,35 @@ public class DispatcherReserva {
 
 	public void incluirReserva(Reserva reserva) {
 
-		try {
-			String entradaAux = reserva.getDataEntrada().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-			String saidaAux = reserva.getDataSaida().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+		PreparedStatement pstmt = null;
 		
-			
+		try {
 			String sql = String.format(
 					"INSERT INTO T_RESERVA(ID_RESERVA, QUARTO_RESERVA, DTENTRADA, DTSAIDA, QTDPESSOAS)"
-							+ "VALUES(SQ_RESERVA.nextval, %d, '%s','%s', %d)",
-					reserva.getQuarto().getNumero(), 
-					entradaAux, 
-					saidaAux,
-					reserva.getQuantidadePessoas());
+							+ "VALUES(SQ_RESERVA.nextval, ?, ?, ?, ?)");
+			
+			pstmt = this.conn.prepareStatement(sql);
 
-			Statement stmt = this.conn.createStatement();
-			stmt.executeUpdate(sql);
+			pstmt.setInt(1, reserva.getQuarto().getNumero());
+			pstmt.setDate(2, java.sql.Date.valueOf(reserva.getDataEntrada()));
+			pstmt.setDate(3, java.sql.Date.valueOf(reserva.getDataSaida()));
+			pstmt.setInt(4, reserva.getQuantidadePessoas());
+
+			pstmt.executeUpdate();
 			
 			System.out.print("Reserva feita com sucesso!");
 			
-			this.desconecta(this.conn);
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} 
+		} finally {
+			try {
+				pstmt.close();
+				this.desconecta(this.conn);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public void desconecta(Connection conn) throws SQLException {
@@ -81,7 +88,7 @@ public class DispatcherReserva {
 				
 				Quarto quarto = new Quarto();
 				quarto.setNumero(numeroQuarto);
-				 reservas.add(new Reserva(quarto, entradaAux, saidaAux, qtPessoas));
+				reservas.add(new Reserva(quarto, entradaAux, saidaAux, qtPessoas));
 			}
 
 			this.fecharConexao(this.conn);

@@ -14,6 +14,7 @@ import br.com.fiap.pousada.Models.Reserva;
 
 public class BoReserva {
 	
+	
 	private DispatcherReserva dsp;
 	
 	public BoReserva() {
@@ -28,4 +29,6 @@ public class BoReserva {
 
 		dsp.incluirReserva(reserva);
 	}
+	
+	
 }
