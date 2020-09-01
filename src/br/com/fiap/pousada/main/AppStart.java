@@ -1,3 +1,4 @@
+package br.com.fiap.pousada.main;
 /*
  * Manutenção de fonte
  * Autor: Gabriel Garcia Pereira
@@ -14,6 +15,7 @@ import br.com.fiap.pousada.Menu.Menu;
 import br.com.fiap.pousada.Models.Quarto;
 import br.com.fiap.pousada.Models.Enums.Categoria;
 
+
 public class AppStart {
 
 	public static void main(String[] args) throws Exception {
@@ -29,8 +31,8 @@ public class AppStart {
 
 		try (Scanner scan = new Scanner(System.in)) {
 			Menu menu = new Menu();
-			
 			int opcao = 0;
+
 			do {
 				menu.iniciaMenu();
 				System.out.print("> ");
@@ -72,5 +74,6 @@ public class AppStart {
 		new BoQuarto().incluirQuartos(lstQuarto);
 		
 	}
+
 
 }

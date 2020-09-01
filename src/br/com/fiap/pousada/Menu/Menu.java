@@ -17,11 +17,13 @@ import br.com.fiap.pousada.BLL.BoQuarto;
 import br.com.fiap.pousada.BLL.BoReserva;
 import br.com.fiap.pousada.Models.Quarto;
 import br.com.fiap.pousada.Models.Reserva;
+import static br.com.fiap.pousada.validator.InputValidator.isDataEntradaValida;
+import static br.com.fiap.pousada.validator.InputValidator.isDataSaidaValida;
 
 public class Menu {
 	
 
-	public void iniciaMenu() {
+	public static void iniciaMenu() {
 			
 		System.out.println("|-----------------------------|");
 		System.out.println("|    POUSADA		      	  |");
@@ -63,13 +65,40 @@ public class Menu {
 
 			System.out.print("Data de entrada: ");
 			String dataEntrada = scan.nextLine();
+			LocalDate dtEntradaAux = null;
 			
-			LocalDate dtEntradaAux = LocalDate.parse(dataEntrada, formatter);
-
+			try {
+				dtEntradaAux = LocalDate.parse(dataEntrada, formatter);
+			}catch (Exception e) {
+				System.out.println("Favor informar uma data válida no formato dd-MM-yyyy ");
+				restartProgram(scan);
+			}
+			
+			if(!isDataEntradaValida(dtEntradaAux)) {
+				System.out.println("Data de entrada deve ser a mesma ou posterior a data atual, favor tente novamente");
+				restartProgram(scan);
+			}
+			
+		
+			
+			//TODO verificar se a data de entrada é anterior a data atual
+			
 			System.out.print("Data de saída: ");
 			String dataSaida = scan.nextLine();
 
-			LocalDate dtSaidaAux = LocalDate.parse(dataSaida, formatter);
+			LocalDate dtSaidaAux = null;
+			
+			try {
+				dtSaidaAux = LocalDate.parse(dataSaida, formatter);
+			}catch (Exception e) {
+				System.out.println("Favor informar uma data válida no formato dd-MM-yyyy ");
+				restartProgram(scan);
+			}
+			
+			if(!isDataSaidaValida(dtSaidaAux, dtEntradaAux)) {
+				System.out.println("Data de saída deve ser posterior a data atual em no mínimo 2 dias, favor tente novamente");
+				restartProgram(scan);
+			}	
 
 			System.out.print("Quantidade de pessoas: ");
 			int qtdPessoas = scan.nextInt();
@@ -89,6 +118,14 @@ public class Menu {
 			e.printStackTrace();
 		}
 
+	}
+
+	public static void restartProgram(Scanner scan) throws ParseException {
+		Menu menu = new Menu();
+		iniciaMenu();
+		System.out.print("> ");
+		scan.nextLine();
+		menu.incluirReserva(scan);
 	}
 	
 
