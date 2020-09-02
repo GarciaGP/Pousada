@@ -21,7 +21,7 @@ public class SqlConfig {
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			// Especificar usuário e senha do banco nos últimos parâmetros
-			this.conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "system", "ggplolz123");
+			this.conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "", "");
 
 		} catch (ClassNotFoundException e) {
 			System.err.printf("Não foi possível localizar o driver: %s", e.getMessage());
