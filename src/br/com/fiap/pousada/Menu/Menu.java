@@ -7,6 +7,9 @@
 
 package br.com.fiap.pousada.Menu;
 
+import static br.com.fiap.pousada.validator.InputValidator.isDataEntradaValida;
+import static br.com.fiap.pousada.validator.InputValidator.isDataSaidaValida;
+
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -14,11 +17,11 @@ import java.util.List;
 import java.util.Scanner;
 
 import br.com.fiap.pousada.BLL.BoQuarto;
+import br.com.fiap.pousada.BLL.BoRecibo;
 import br.com.fiap.pousada.BLL.BoReserva;
 import br.com.fiap.pousada.Models.Quarto;
+import br.com.fiap.pousada.Models.Recibo;
 import br.com.fiap.pousada.Models.Reserva;
-import static br.com.fiap.pousada.validator.InputValidator.isDataEntradaValida;
-import static br.com.fiap.pousada.validator.InputValidator.isDataSaidaValida;
 
 public class Menu {
 	
@@ -79,10 +82,6 @@ public class Menu {
 				restartProgram(scan);
 			}
 			
-		
-			
-			//TODO verificar se a data de entrada é anterior a data atual
-			
 			System.out.print("Data de saída: ");
 			String dataSaida = scan.nextLine();
 
@@ -114,10 +113,13 @@ public class Menu {
 
 			new BoReserva().incluirReserva(reserva);
 			System.out.println("|------ Fim do Cadastro ------|");
+			new BoRecibo();
+			Recibo recibo = BoRecibo.geraRecibo(reserva);
+			System.out.println(recibo);
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 		}
-
+		
 	}
 
 	public static void restartProgram(Scanner scan) throws ParseException {
@@ -127,6 +129,7 @@ public class Menu {
 		scan.nextLine();
 		menu.incluirReserva(scan);
 	}
+	
 	
 
 }

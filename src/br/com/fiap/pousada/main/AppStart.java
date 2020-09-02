@@ -74,6 +74,6 @@ public class AppStart {
 		new BoQuarto().incluirQuartos(lstQuarto);
 		
 	}
-
-
+	
+	
 }

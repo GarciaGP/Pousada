@@ -8,6 +8,7 @@
 package br.com.fiap.pousada.Models;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 public class Reserva {
 	private Quarto quarto;
@@ -23,6 +24,8 @@ public class Reserva {
 		this.dataSaida = dataSaida;
 		this.quantidadePessoas = quantidadePessoas;
 	}
+	
+	public Reserva() {}
 	
 	public Quarto getQuarto() {
 		return quarto;
@@ -54,5 +57,12 @@ public class Reserva {
 		return "quarto: "  + quarto + " dataEntrada: "  + dataEntrada + " dataSaida: "  + dataSaida
 				+ " quantidadePessoas: "  + quantidadePessoas ;
 	}
+	
+	public double calculaTotalHospedagem(LocalDate dataInicio, LocalDate dataFim, Quarto quarto) {
+		long diferencaEmDias = ChronoUnit.DAYS.between(dataInicio, dataFim);
+		
+		return diferencaEmDias * quarto.getValorDiaria();
+	}
+	
 	
 }
