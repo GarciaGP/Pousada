@@ -15,34 +15,37 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.fiap.pousada.BLL.BoReserva;
 import br.com.fiap.pousada.Config.SqlConfig;
 import br.com.fiap.pousada.Models.Quarto;
 import br.com.fiap.pousada.Models.Enums.Categoria;
 
 // Classe de acesso ao banco - Quarto
 public class DispatcherQuarto {
-	
+
 	private Connection conn;
-	
+
 	public DispatcherQuarto() {
 		this.conn = new SqlConfig().getConn();
 	}
-	
+
 	public void incluirQuartos(List<Quarto> quartos) {
-			
+
 		try {
-			
-			for(Quarto quarto : quartos) {
-						
-				String sql = String.format("INSERT INTO T_QUARTO(NR_QUARTO, CATEGORIA, MAXPESSOAS, VLRDIARIA)"
-						+ "VALUES(?, ?, ?, ?)", quarto.getNumero(), quarto.getCategoria().ordinal(),
-						quarto.getMaxPessoas(), quarto.getValorDiaria());
-				
+
+			for (Quarto quarto : quartos) {
+
+				String sql = String.format(
+						"INSERT INTO T_QUARTO(NR_QUARTO, CATEGORIA, MAXPESSOAS, VLRDIARIA)"
+								+ "VALUES(%d, %d, %d, %.00f)",
+						quarto.getNumero(), quarto.getCategoria().ordinal(), quarto.getMaxPessoas(),
+						quarto.getValorDiaria());
+
 				Statement stmt = this.conn.createStatement();
 				stmt.executeUpdate(sql);
-				
-			}			
-		
+
+			}
+
 			this.desconecta(this.conn);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -53,11 +56,12 @@ public class DispatcherQuarto {
 				e.printStackTrace();
 			}
 		}
-		
+
 	}
-	
+
 	public void desconecta(Connection conn) throws SQLException {
-		if(!conn.isClosed()) conn.close();
+		if (!conn.isClosed())
+			conn.close();
 	}
 
 	public List<Quarto> consultarQuartos() {
@@ -99,25 +103,22 @@ public class DispatcherQuarto {
 	public Quarto obterQuarto(int numeroQuarto) {
 
 		try {
-			
+
+			Quarto quarto = null;
 			PreparedStatement pstmt = null;
 			String sql = String.format("SELECT * from T_QUARTO WHERE NR_QUARTO LIKE '%d'", numeroQuarto);
-			
-			pstmt = this.conn.prepareStatement(sql);
-							
-			ResultSet rs = pstmt.executeQuery();
-			
-			Quarto quarto = new Quarto();
 
-			while(rs.next()){
-				
-				quarto.setNumero(rs.getInt("NR_QUARTO"));
-				quarto.setCategoria(Categoria.values()[rs.getInt("CATEGORIA")]);
-				quarto.setMaxPessoas(rs.getInt("MAXPESSOAS"));
-				quarto.setValorDiaria(rs.getDouble("VLRDIARIA"));
-				
+			pstmt = this.conn.prepareStatement(sql);
+
+			ResultSet rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+
+				quarto = new Quarto(rs.getInt("NR_QUARTO"), Categoria.values()[rs.getInt("CATEGORIA")],
+						rs.getInt("MAXPESSOAS"), rs.getDouble("VLRDIARIA"));
+
 			}
-		
+
 			this.fecharConexao(this.conn);
 			return quarto;
 		} catch (Exception e) {
@@ -127,9 +128,31 @@ public class DispatcherQuarto {
 		}
 	}
 
+	public boolean verificaDisponibilidadeQuarto(int numeroQuarto) throws SQLException {
+
+		try {
+
+			PreparedStatement pstmt = null;
+			String sql = String.format("SELECT * from T_RESERVA WHERE QUARTO_RESERVA LIKE '%d'", numeroQuarto);
+
+			pstmt = this.conn.prepareStatement(sql);
+
+			ResultSet rs = pstmt.executeQuery();
+			
+			return rs.next() ? true : false;
+
+
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			return false;
+		} finally {
+			this.fecharConexao(this.conn);
+		}
+	}
+
 	public void fecharConexao(Connection conn) throws SQLException {
 		if (!conn.isClosed())
 			conn.close();
 	}
-	
+
 }

@@ -8,9 +8,8 @@
 package br.com.fiap.pousada.Models.Enums;
 
 public enum Categoria {
+
 	VIP, 
 	APARTAMENTO;
-	
-
 	
 }

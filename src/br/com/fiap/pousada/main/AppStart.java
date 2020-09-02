@@ -15,19 +15,18 @@ import br.com.fiap.pousada.Menu.Menu;
 import br.com.fiap.pousada.Models.Quarto;
 import br.com.fiap.pousada.Models.Enums.Categoria;
 
-
 public class AppStart {
 
 	public static void main(String[] args) throws Exception {
-		
+
 		// Verifica se há registros na base, caso não tenha, cria os quartos
-		
+
 		List<Quarto> lstQuartos = new ArrayList<>();
-		
+
 		lstQuartos = new BoQuarto().consultarQuartos();
-		
-		if(lstQuartos == null || lstQuartos.isEmpty()) 
-			gerarQuartos();		
+
+		if (lstQuartos == null || lstQuartos.isEmpty())
+			gerarQuartos();
 
 		try (Scanner scan = new Scanner(System.in)) {
 			Menu menu = new Menu();
@@ -57,23 +56,40 @@ public class AppStart {
 	}
 
 	private static void gerarQuartos() {
-		
-		// TODO: Implementar mecanismo que gera quartos seguindo as regras do escopo
-		
-		List<Quarto> lstQuarto = new ArrayList<>();
-		
-		Quarto quarto = new Quarto();
-		
-		quarto.setNumero(3);
-		quarto.setCategoria(Categoria.APARTAMENTO);
-		quarto.setMaxPessoas(10);
-		quarto.setValorDiaria(100.00);
-		
-		lstQuarto.add(quarto);
-		
-		new BoQuarto().incluirQuartos(lstQuarto);
-		
-	}
 
+		// TODO: Implementar mecanismo que gera quartos seguindo as regras do escopo
+
+		List<Quarto> lstQuarto = new ArrayList<>();
+
+		int contador = 0;
+		int numero = 0;
+
+		while (contador < 15) {
+			Quarto quarto = new Quarto();
+
+			numero = numero + 2;
+
+			quarto.setNumero(numero);
+			quarto.setCategoria(numero <= 20 ? Categoria.APARTAMENTO : Categoria.VIP);
+			quarto.setMaxPessoas(numero < 20 ? definirMaximoPessoas(1, 5) : definirMaximoPessoas(1, 10));
+			quarto.setValorDiaria(numero < 20 ? gerarValorDiaria(50.0, 150.0) : gerarValorDiaria(200.0, 300.0));
+			
+			contador++;
+			lstQuarto.add(quarto);
+		}
+
+		new BoQuarto().incluirQuartos(lstQuarto);
+
+	}
+	
+	private static double gerarValorDiaria(double min, double max){
+	    double x = (Math.random()*((max-min)+1))+min;
+	    return x;
+	}
+	
+	private static int definirMaximoPessoas(int min, int max){
+		int x = (int) ((Math.random()*((max-min)+1))+min);
+	    return x;
+	}
 
 }

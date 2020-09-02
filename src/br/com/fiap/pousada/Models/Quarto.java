@@ -7,6 +7,7 @@
 
 package br.com.fiap.pousada.Models;
 
+import br.com.fiap.pousada.BLL.BoQuarto;
 import br.com.fiap.pousada.Models.Enums.Categoria;
 
 public class Quarto {
@@ -17,7 +18,6 @@ public class Quarto {
 
 	// CONSTRUTOR
 	public Quarto(int numero, Categoria categoria, int maxPessoas, double valorDiaria) {
-		super();
 		this.numero = numero;
 		this.categoria = categoria;
 		this.maxPessoas = maxPessoas;
@@ -67,5 +67,10 @@ public class Quarto {
 				+ valorDiaria ;
 	}
 	
+	public boolean verificaDisponibilidadeQuarto(int numeroQuarto) throws Exception {
+		BoQuarto bo = new BoQuarto();
+		
+		return bo.verificaDisponibilidadeQuarto(numeroQuarto);
+	}
 
 }

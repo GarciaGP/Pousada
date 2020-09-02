@@ -48,7 +48,7 @@ public class DispatcherReserva {
 
 			pstmt.executeUpdate();
 			
-			System.out.print("Reserva feita com sucesso!");
+			System.out.println("Reserva feita com sucesso!");
 			
 			
 		} catch (SQLException e) {

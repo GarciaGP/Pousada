@@ -30,7 +30,23 @@ public class BoQuarto {
 		return quartos;
 	}
 
-	public Quarto obterQuarto(int numeroQuarto) {
-		return dsp.obterQuarto(numeroQuarto);
+	public Quarto obterQuarto(int numeroQuarto) throws Exception {
+		
+		Quarto quarto = dsp.obterQuarto(numeroQuarto);
+		
+		if (quarto == null)
+			throw new Exception("O quarto não existe!");
+		
+		return quarto;
+	}
+
+	public boolean verificaDisponibilidadeQuarto(int numeroQuarto) throws Exception {
+		
+		boolean quartoExiste = dsp.verificaDisponibilidadeQuarto(numeroQuarto);
+		
+		if(quartoExiste)
+			throw new Exception("Este quarto não está disponível.");
+		
+		return quartoExiste;
 	}
 }
