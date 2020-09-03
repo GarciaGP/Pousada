@@ -68,13 +68,13 @@ public class Reserva {
 	public void validarModel(Reserva reserva) throws Exception {
 
 			if (!isDataEntradaValida(reserva.dataEntrada))
-				throw new Exception("Data de entrada inválida.");
+				throw new Exception(ErrorMessages.DATA_ENTRADA_INVALIDA);
 
 			if (!isDataSaidaValida(reserva.dataSaida, reserva.dataEntrada))
-				throw new Exception("Data de saída precisa ser no mínimo 2 dias após a data de entrada.");
+				throw new Exception(ErrorMessages.DATA_SAIDA_MAIOR_QUE_ENTRADA);
 
 			if (this.quantidadePessoas > this.quarto.getMaxPessoas())
-				throw new Exception("O número de pessoas na reserva excede o máximo de pessoas para este quarto.");
+				throw new Exception(ErrorMessages.NUMERO_PESSOAS_EXCEDENTE);
 
 	}
 	

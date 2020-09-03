@@ -26,6 +26,7 @@ import java.util.Scanner;
 import br.com.fiap.pousada.BLL.BoQuarto;
 import br.com.fiap.pousada.BLL.BoRecibo;
 import br.com.fiap.pousada.BLL.BoReserva;
+import br.com.fiap.pousada.Models.ErrorMessages;
 import br.com.fiap.pousada.Models.Quarto;
 import br.com.fiap.pousada.Models.Recibo;
 import br.com.fiap.pousada.Models.Reserva;
@@ -73,12 +74,27 @@ public class Menu {
 
 			System.out.print("Data de entrada: ");
 			String dataEntrada = scan.nextLine();
-			LocalDate dtEntradaAux = LocalDate.parse(dataEntrada, formatter);
-
+			
+			LocalDate dtEntradaAux = null;
+			
+			try {
+				dtEntradaAux = LocalDate.parse(dataEntrada, formatter);
+			}catch (Exception e) {
+				System.out.println(ErrorMessages.FORMATO_DATA_INVALIDO);
+				restartProgram(scan);
+			}
+			
 			System.out.print("Data de saída: ");
 			String dataSaida = scan.nextLine();
-			LocalDate dtSaidaAux = LocalDate.parse(dataSaida, formatter);
-
+			
+			LocalDate dtSaidaAux = null;
+			
+			try {
+				dtSaidaAux = LocalDate.parse(dataSaida, formatter);
+			}catch(Exception e) {
+				System.out.println(ErrorMessages.FORMATO_DATA_INVALIDO);
+				restartProgram(scan);
+			}
 			System.out.print("Quantidade de pessoas: ");
 			int qtdPessoas = scan.nextInt();
 
