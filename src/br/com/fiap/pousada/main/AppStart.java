@@ -41,10 +41,13 @@ public class AppStart {
 				switch (opcao) {
 				case 1:
 					menu.incluirReserva(scan);
+					break;
 				case 2:
 					menu.consultarQuartos();
+					break;
 				case 3:
 					menu.consultarReservas();
+					break;
 				}
 
 				System.out.println("\n\n");

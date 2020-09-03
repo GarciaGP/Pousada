@@ -15,7 +15,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.fiap.pousada.BLL.BoReserva;
 import br.com.fiap.pousada.Config.SqlConfig;
 import br.com.fiap.pousada.Models.Quarto;
 import br.com.fiap.pousada.Models.Enums.Categoria;
@@ -77,18 +76,11 @@ public class DispatcherQuarto {
 
 			while (rs.next()) {
 				int numeroQuarto = rs.getInt("NR_QUARTO");
-				int categoria = rs.getInt("CATEGORIA");
+				Categoria categoria = Categoria.values()[rs.getInt("CATEGORIA")];
 				int maxPessoas = rs.getInt("MAXPESSOAS");
 				Double valorDiaria = rs.getDouble("VLRDIARIA");
 
-				switch (categoria) {
-				case 0:
-					ct = Categoria.APARTAMENTO;
-				case 1:
-					ct = Categoria.VIP;
-				}
-
-				quartos.add(new Quarto(numeroQuarto, ct, maxPessoas, valorDiaria));
+				quartos.add(new Quarto(numeroQuarto, categoria, maxPessoas, valorDiaria));
 			}
 
 			this.fecharConexao(this.conn);

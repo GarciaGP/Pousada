@@ -2,7 +2,6 @@ package br.com.fiap.pousada.validator;
 
 import java.time.LocalDate;
 
-import br.com.fiap.pousada.Models.Reserva;
 
 public class InputValidator {
 

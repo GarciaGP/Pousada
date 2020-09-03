@@ -8,8 +8,7 @@
 package br.com.fiap.pousada.Models;
 
 import java.time.LocalDate;
-
-import br.com.fiap.pousada.BLL.BoReserva;
+import java.time.temporal.ChronoUnit;
 
 import static br.com.fiap.pousada.validator.InputValidator.isDataEntradaValida;
 import static br.com.fiap.pousada.validator.InputValidator.isDataSaidaValida;
@@ -62,8 +61,8 @@ public class Reserva {
 
 	@Override
 	public String toString() {
-		return "Quarto: " + quarto.getNumero() + "|| Data de entrada: " + dataEntrada + "|| Data de saída: " + dataSaida
-				+ "|| Pessoas na reserva: " + quantidadePessoas;
+		return "Quarto: " + quarto.getNumero() + " || Data de entrada: " + dataEntrada + " || Data de saída: " + dataSaida
+				+ " || Pessoas na reserva: " + quantidadePessoas;
 	}
 
 	public void validarModel(Reserva reserva) throws Exception {
@@ -77,6 +76,12 @@ public class Reserva {
 			if (this.quantidadePessoas > this.quarto.getMaxPessoas())
 				throw new Exception("O número de pessoas na reserva excede o máximo de pessoas para este quarto.");
 
+	}
+	
+	public double calculaTotalHospedagem(LocalDate dataInicio, LocalDate dataFim, Quarto quarto) {
+		long diferencaEmDias = ChronoUnit.DAYS.between(dataInicio, dataFim);
+
+		return diferencaEmDias * quarto.getValorDiaria();
 	}
 
 }
